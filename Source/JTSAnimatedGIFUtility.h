@@ -9,7 +9,7 @@
 @import UIKit;
 
 @interface JTSAnimatedGIFUtility : NSObject
-
++ (BOOL)imageIsAGIF:(NSData *)imageData;
 + (BOOL)imageURLIsAGIF:(NSString *)imageURL;
 
 /*
