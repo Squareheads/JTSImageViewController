@@ -20,7 +20,7 @@
 
 @implementation JTSAnimatedGIFUtility
 + (BOOL)imageIsAGIF:(NSData *)imageData {
-    if (data.length >= 4) {
+    if (imageData.length >= 4) {
         NSData *subData = [imageData subdataWithRange:NSMakeRange(0, 4)];
         NSString *fourCC = [[NSString alloc] initWithData:subData encoding:NSUTF8StringEncoding];
         if ([fourCC isEqualToString:@"GIF8"]) {
@@ -29,6 +29,7 @@
     }
     return NO;
 }
+
 
 + (BOOL)imageURLIsAGIF:(NSString *)imageURL {
     return [[imageURL substringFromIndex:[imageURL length] - 3] isEqualToString:@"gif"];
