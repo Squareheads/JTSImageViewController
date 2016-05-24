@@ -92,7 +92,16 @@ static int vectorGCD(size_t const count, int const *const values) {
 
 static NSArray *frameArray(size_t const count, CGImageRef const images[count], int const delayCentiseconds[count], int const totalDurationCentiseconds) {
     int const gcd = vectorGCD(count, delayCentiseconds);
+    
     size_t const frameCount = totalDurationCentiseconds / gcd;
+    if (frameCount != count) {
+        NSMutableArray *frames = [NSMutableArray new];
+        for (int i=0; i<count; i++) {
+            [frames addObject:[UIImage imageWithCGImage:images[i]]];
+        }
+        return frames;
+    }
+    
     UIImage *frames[frameCount];
     for (size_t i = 0, f = 0; i < count; ++i) {
         UIImage *const frame = [UIImage imageWithCGImage:images[i]];
@@ -125,7 +134,9 @@ static UIImage *animatedImageWithAnimatedGIFImageSource(CGImageSourceRef const s
         }
     } else {
         NSArray *const frames = frameArray(count, images, delayCentiseconds, totalDurationCentiseconds);
-        UIImage *const animation = [UIImage animatedImageWithImages:frames duration:(NSTimeInterval)totalDurationCentiseconds / 100.0];
+        NSTimeInterval animationDuration = MAX(totalDurationCentiseconds/100.0, 0.35);
+        UIImage *const animation = [UIImage animatedImageWithImages:frames duration:(NSTimeInterval)animationDuration];
+        
         releaseImages(count, images);
         image = animation;
     }
